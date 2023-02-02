@@ -12,10 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_pass = $_POST['user_pass'];
 
     if (!empty($user_name) && !empty($user_pass) && !is_numeric($user_name)) {
-
         // READ FROM DATA BASE name and password to database 
-
-
         $query = "select * from auth where user_name = '$user_name' limit 1";
         $result = mysqli_query($con, $query);
         if ($result) {
@@ -23,8 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $user_data = mysqli_fetch_assoc($result);
 
-                if ($user_data['user_pass'] === $user_pass) {
 
+                // Comparing hashed_password with password user enters 
+
+                if (password_verify($user_pass, $user_data['user_pass'])) {
 
                     $_SESSION['user_id'] = $user_data['user_id'];
                     header("Location: index.php");
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
-        echo ("Please enter your username and password correctly ");
+        echo ("Please enter your username and password correctly");
     } else {
 
         echo ("Please enter your username and password correctly ");

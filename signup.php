@@ -13,11 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($user_name) && !empty($user_pass) && !is_numeric($user_name)) {
 
+        $user_hash_pass = password_hash($user_pass, PASSWORD_DEFAULT);
+
         // save user name and password to database 
         $user_id = random_num(20);
 
 
-        $query = "insert into  auth (user_id,user_name, user_pass) values ('$user_id', '$user_name' , '$user_pass'  )";
+        $query = "insert into  auth (user_id,user_name, user_pass) values ('$user_id', '$user_name' , '$user_hash_pass'  )";
         mysqli_query($con, $query);
         header("location: login.php");
         die;
@@ -26,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo ("Please enter your username and password correctly ");
     }
 }
-
 ?>
 
 
